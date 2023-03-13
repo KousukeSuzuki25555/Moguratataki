@@ -32,5 +32,6 @@ public:
 	int CountArray();	//要素の数を数える
 	void ScoreIn();	//要素にスコアを入れる
 	void ArrayInit(ST_SCORE* newOne);	//ST_SCOREの初期化
+	void RemoveArray(ST_SCORE* removed);	//削除する
 	void RankUpdate();	//ランキングを表示する
 };

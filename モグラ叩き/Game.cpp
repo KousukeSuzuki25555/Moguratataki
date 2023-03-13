@@ -10,7 +10,6 @@ GAME::GAME() {
 		alphabet[e].hit = false;
 	}
 	pplayer = new PLAYER;
-	//pscore = new SCORE;
 	gameState = PLAY;	//今どの場面なのか
 	attackTimeLimeit = 0;
 	limitFlag = false;
@@ -19,11 +18,9 @@ GAME::GAME() {
 
 GAME::~GAME() {
 	delete pplayer;
-	//delete pscore;
 	for (int e = 0; e < CIRCLE_MAX; e++) {
 		delete penemy[e];
 	}
-	//delete ptime;
 }
 
 void GAME::PointerInit(DRAW* pdraw,MY_TIME* ptime, SCORE* pscore,int* state){	//ポインタの初期化

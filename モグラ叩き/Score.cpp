@@ -8,12 +8,16 @@
 
 SCORE::SCORE() {	//コンストラクタ
 	array = new ST_SCORE;
-	s_array = array;
 	MakeFirstArray();
 }
 
 SCORE::~SCORE() {	//デストラクタ
-	delete s_array;
+	MoveLast();	//要素を最後に移動する
+	while (array->before != NULL) {
+		array = array->before;
+		RemoveArray(array->next);
+	}
+	RemoveArray(array);
 }
 
 void SCORE::SaveData() {				//データをセーブする関数
@@ -83,7 +87,7 @@ void SCORE::MakeFirstArray() {	//最初の要素を作る
 }
 
 ST_SCORE* SCORE::MakeArray() {	//要素を追加する
-	ST_SCORE* newArray = (ST_SCORE*)calloc(1, sizeof(ST_SCORE));
+	ST_SCORE* newArray = new ST_SCORE;
 	return newArray;
 }
 
@@ -155,13 +159,11 @@ void SCORE::ScoreIn() {	//要素にスコアを入れる
 		}
 		array = array->next;
 	}
-	if (num < 11) {
-		//MoveLast();
-		ST_SCORE* newArray = MakeArray();	//要素を付け替える処理
-		ArrayInit(newArray);
-		newArray->score = gameScore;
-		array->next = newArray;
-		newArray->before = array;
+	if (num < 11) {	//numが11以上なら最後の要素を削除する
+		MoveLast();	//最後に移動
+		array = array->before;	//一個戻る
+		RemoveArray(array->next);	//最後の要素を削除
+		//array->next = NULL;	//次の要素とのつながりを削除
 	}
 }
 
@@ -169,6 +171,13 @@ void SCORE::ArrayInit(ST_SCORE* newOne) {	//ST_SCOREの初期化
 	newOne->score = 0;
 	newOne->before = NULL;
 	newOne->next = NULL;
+}
+
+void SCORE::RemoveArray(ST_SCORE* removed) {	//削除する
+	if (removed->before != NULL) {
+		removed->before->next = NULL;
+	}
+	delete removed;
 }
 
 void SCORE::RankUpdate() {	//ランキングを表示する

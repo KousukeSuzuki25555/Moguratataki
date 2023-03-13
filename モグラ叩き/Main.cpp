@@ -1,4 +1,5 @@
-﻿#include "Main.h"
+﻿
+#include "Main.h"
 #include "MyTime.h"
 #include "Game.h"
 #include "Draw.h"
@@ -7,6 +8,18 @@
 #include "Rights.h"
 #include "Guide.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+
+#ifdef _DEBUG
+#define new::new(_NORMAL_BLOCK,__FILE__,__LINE__)
+#else
+#define DBG_NEW new
+#endif
+
+
 #define X_MAX	(1280)		//画面横の大きさ
 #define Y_MAX	(720)		//画面縦の大きさ
 
@@ -14,6 +27,9 @@ void Main()
 {
 	srand((unsigned)time(NULL));
 	Window::Resize(X_MAX, Y_MAX);		//画面サイズの変更
+
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF| _CRTDBG_LEAK_CHECK_DF);
+
 	GAME* pgame = new GAME;
 	MY_TIME* ptime = new MY_TIME;
 	DRAW* pdraw = new DRAW;
@@ -78,10 +94,14 @@ void Main()
 			break;
 		}
 	}
-	delete pgame;
-	delete ptitle;
-	delete pscore;
+
+	delete finish;
 	delete pstate;
+	delete pscore;
+	delete ptitle;
 	delete pdraw;
 	delete ptime;
+	delete pgame;
+	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
+	_CrtDumpMemoryLeaks();
 }
